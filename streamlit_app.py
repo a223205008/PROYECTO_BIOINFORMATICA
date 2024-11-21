@@ -5,6 +5,10 @@ st.write(
     "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
 )
 
+import matplotlib.pyplot as plt
+from collections import Counter
+
+# Diccionario para la traducción del código genético
 codon_to_amino_acid = {
     'AUG': 'Met', 'UUU': 'Phe', 'UUC': 'Phe', 'UUA': 'Leu', 'UUG': 'Leu', 'CUU': 'Leu', 'CUC': 'Leu', 'CUA': 'Leu', 'CUG': 'Leu',
     'AUU': 'Ile', 'AUC': 'Ile', 'AUA': 'Ile', 'AUG': 'Met', 'GUU': 'Val', 'GUC': 'Val', 'GUA': 'Val', 'GUG': 'Val',
@@ -34,11 +38,30 @@ def traducir_arn_a_proteina(arn):
 
 # Función para contar la cantidad de tipos de proteínas
 def contar_proteinas(proteina):
-    from collections import Counter
     return dict(Counter(proteina))
 
+# Función para graficar las proteínas
+def graficar_proteinas(conteo_proteinas):
+    # Datos para la gráfica
+    proteinas = list(conteo_proteinas.keys())
+    cantidades = list(conteo_proteinas.values())
+
+    # Crear el gráfico
+    plt.figure(figsize=(10, 6))
+    plt.bar(proteinas, cantidades, color='skyblue')
+
+    # Añadir título y etiquetas
+    plt.title('Frecuencia de Proteínas en la Secuencia de ADN')
+    plt.xlabel('Proteínas')
+    plt.ylabel('Frecuencia')
+    plt.xticks(rotation=45, ha="right")
+
+    # Mostrar el gráfico
+    plt.tight_layout()
+    plt.show()
+
 # Función principal
-def analizar_adn(adn):
+def analizar_adn_y_graficar(adn):
     # Transcripción de ADN a ARN
     arn = transcribir_adn_a_arn(adn)
     
@@ -48,15 +71,11 @@ def analizar_adn(adn):
     # Contar los tipos de proteínas
     conteo_proteinas = contar_proteinas(proteina)
     
-    # Resultados
-    return proteina, conteo_proteinas
+    # Graficar los resultados
+    graficar_proteinas(conteo_proteinas)
 
 # Entrada: Secuencia de ADN
 secuencia_adn = "ATGCGTACGTTAGC"  # Ejemplo de secuencia de ADN
 
-# Analizar la secuencia de ADN
-proteina, conteo_proteinas = analizar_adn(secuencia_adn)
-
-# Mostrar resultados
-print("Secuencia de proteína:", proteina)
-print("Conteo de proteínas:", conteo_proteinas)
+# Analizar la secuencia de ADN y graficar
+analizar_adn_y_graficar(secuencia_adn)
