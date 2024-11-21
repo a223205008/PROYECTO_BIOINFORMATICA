@@ -2,6 +2,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 from collections import Counter
+
 st.sidebar.title("¿Cuántas proteínas contiene y cuáles son?")
 st.sidbear.button("Click")
 st.sidbear.radio("Contenido",["Graficas", "Imagenes"]
@@ -10,7 +11,6 @@ st.title("¿Cuántas proteínas contiene y cuáles son?")
 st.write(
     "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
 )
-
 # Diccionario para la traducción del código genético
 codon_to_amino_acid = {
     'AUG': 'Met', 'UUU': 'Phe', 'UUC': 'Phe', 'UUA': 'Leu', 'UUG': 'Leu', 'CUU': 'Leu', 'CUC': 'Leu', 'CUA': 'Leu', 'CUG': 'Leu',
