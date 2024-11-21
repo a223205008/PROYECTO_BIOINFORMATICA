@@ -74,6 +74,7 @@ def analizar_adn_y_graficar(adn):
     # Graficar los resultados
     graficar_proteinas(conteo_proteinas)
 
+secuencia_adn = "ATGCGTACGTTAGC" 
 
 # Analizar la secuencia de ADN y graficar
 analizar_adn_y_graficar(secuencia_adn)
