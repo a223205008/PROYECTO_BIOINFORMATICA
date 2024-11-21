@@ -75,7 +75,7 @@ def analizar_adn_y_graficar(adn):
     graficar_proteinas(conteo_proteinas)
 
 # Entrada: Secuencia de ADN
-secuencia_adn = "ATGCGTACGTTAGC"  # Ejemplo de secuencia de ADN
+st.sidebar(secuencia_adn) = "ATGCGTACGTTAGC"  # Ejemplo de secuencia de ADN
 
 # Analizar la secuencia de ADN y graficar
 analizar_adn_y_graficar(secuencia_adn)
