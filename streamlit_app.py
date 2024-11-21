@@ -3,78 +3,64 @@ import matplotlib.pyplot as plt
 import numpy as np
 from collections import Counter
 
-st.title("¿Cuántas proteínas contiene y cuáles son lolito fernandez?")
+st.title("¿Cuántas proteínas contiene y cuáles son?")
 st.write(
     "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
 )
 
-# Diccionario para la traducción del código genético
+import streamlit as st
+
+# Diccionario de codones de ARN a aminoácidos
 codon_to_amino_acid = {
-    'AUG': 'Met', 'UUU': 'Phe', 'UUC': 'Phe', 'UUA': 'Leu', 'UUG': 'Leu', 'CUU': 'Leu', 'CUC': 'Leu', 'CUA': 'Leu', 'CUG': 'Leu',
-    'AUU': 'Ile', 'AUC': 'Ile', 'AUA': 'Ile', 'AUG': 'Met', 'GUU': 'Val', 'GUC': 'Val', 'GUA': 'Val', 'GUG': 'Val',
-    'UCU': 'Ser', 'UCC': 'Ser', 'UCA': 'Ser', 'UCG': 'Ser', 'CCU': 'Pro', 'CCC': 'Pro', 'CCA': 'Pro', 'CCG': 'Pro',
-    'ACU': 'Thr', 'ACC': 'Thr', 'ACA': 'Thr', 'ACG': 'Thr', 'GCU': 'Ala', 'GCC': 'Ala', 'GCA': 'Ala', 'GCG': 'Ala',
-    'UAU': 'Tyr', 'UAC': 'Tyr', 'UAA': 'Stop', 'UAG': 'Stop', 'CAU': 'His', 'CAC': 'His', 'CAA': 'Gln', 'CAG': 'Gln',
-    'AAU': 'Asn', 'AAC': 'Asn', 'AAA': 'Lys', 'AAG': 'Lys', 'GAU': 'Asp', 'GAC': 'Asp', 'GAA': 'Glu', 'GAG': 'Glu',
-    'UGU': 'Cys', 'UGC': 'Cys', 'UGA': 'Stop', 'UGG': 'Trp', 'CGU': 'Arg', 'CGC': 'Arg', 'CGA': 'Arg', 'CGG': 'Arg',
-    'AGU': 'Ser', 'AGC': 'Ser', 'AGA': 'Arg', 'AGG': 'Arg', 'GGU': 'Gly', 'GGC': 'Gly', 'GGA': 'Gly', 'GGG': 'Gly'
+    'UUU': 'F', 'UUC': 'F', 'UUA': 'L', 'UUG': 'L', 'CUU': 'L', 'CUC': 'L',
+    'CUA': 'L', 'CUG': 'L', 'AUU': 'I', 'AUC': 'I', 'AUA': 'I', 'AUG': 'M',
+    'GUU': 'V', 'GUC': 'V', 'GUA': 'V', 'GUG': 'V', 'UCU': 'S', 'UCC': 'S',
+    'UCA': 'S', 'UCG': 'S', 'CCU': 'P', 'CCC': 'P', 'CCA': 'P', 'CCG': 'P',
+    'ACU': 'T', 'ACC': 'T', 'ACA': 'T', 'ACG': 'T', 'GCU': 'A', 'GCC': 'A',
+    'GCA': 'A', 'GCG': 'A', 'UAU': 'Y', 'UAC': 'Y', 'UAA': '*', 'UAG': '*',
+    'CAU': 'H', 'CAC': 'H', 'CAA': 'Q', 'CAG': 'Q', 'AAU': 'N', 'AAC': 'N',
+    'AAA': 'K', 'AAG': 'K', 'GAU': 'D', 'GAC': 'D', 'GAA': 'E', 'GAG': 'E',
+    'UGU': 'C', 'UGC': 'C', 'UGA': '*', 'UGG': 'W', 'CGU': 'R', 'CGC': 'R',
+    'CGA': 'R', 'CGG': 'R', 'AGU': 'S', 'AGC': 'S', 'AGA': 'R', 'AGG': 'R',
+    'GGU': 'G', 'GGC': 'G', 'GGA': 'G', 'GGG': 'G'
 }
 
-# Función para transcribir ADN a ARN
-def transcribir_adn_a_arn(adn):
-    return adn.replace('T', 'U')
+def dna_to_rna(dna_sequence):
+    """Convierte una secuencia de ADN a ARN reemplazando la T por U."""
+    return dna_sequence.replace('T', 'U')
 
-# Función para traducir ARN a proteína
-def traducir_arn_a_proteina(arn):
-    proteina = []
-    for i in range(0, len(arn), 3):
-        codon = arn[i:i+3]
+def rna_to_protein(rna_sequence):
+    """Convierte una secuencia de ARN a proteína (secuencia de aminoácidos)."""
+    protein = []
+    for i in range(0, len(rna_sequence), 3):  # Leer de 3 en 3 nucleótidos (codones)
+        codon = rna_sequence[i:i+3]
         if len(codon) == 3:
-            amino_acido = codon_to_amino_acid.get(codon, 'Stop')
-            if amino_acido == 'Stop':
-                break
-            proteina.append(amino_acido)
-    return proteina
+            amino_acid = codon_to_amino_acid.get(codon, 'X')  # X para codón desconocido
+            if amino_acid == '*':
+                break  # Parada de la traducción
+            protein.append(amino_acid)
+    return ''.join(protein)
 
-# Función para contar la cantidad de tipos de proteínas
-def contar_proteinas(proteina):
-    return dict(Counter(proteina))
+# Interfaz de usuario en Streamlit
+st.title('Análisis de Secuencia de ADN')
 
-# Función para graficar las proteínas
-def graficar_proteinas(conteo_proteinas):
-    # Datos para la gráfica
-    proteinas = list(conteo_proteinas.keys())
-    cantidades = list(conteo_proteinas.values())
+# Entrada del usuario: secuencia de ADN
+dna_input = st.text_area('Introduce una secuencia de ADN:', '')
 
-    # Crear el gráfico
-    plt.figure(figsize=(10, 6))
-    plt.bar(proteinas, cantidades, color='skyblue')
-
-    # Añadir título y etiquetas
-    plt.title('Frecuencia de Proteínas en la Secuencia de ADN')
-    plt.xlabel('Proteínas')
-    plt.ylabel('Frecuencia')
-    plt.xticks(rotation=45, ha="right")
-
-    # Mostrar el gráfico
-    plt.tight_layout()
-    plt.show()
-
-# Función principal
-def analizar_adn_y_graficar(adn):
-    # Transcripción de ADN a ARN
-    arn = transcribir_adn_a_arn(adn)
-    
-    # Traducción de ARN a proteína
-    proteina = traducir_arn_a_proteina(arn)
-    
-    # Contar los tipos de proteínas
-    conteo_proteinas = contar_proteinas(proteina)
-    
-    # Graficar los resultados
-    graficar_proteinas(conteo_proteinas)
-
-secuencia_adn = "ATGCGTACGTTAGC" 
-
-# Analizar la secuencia de ADN y graficar
-analizar_adn_y_graficar(secuencia_adn)
+# Botón para procesar
+if st.button('Analizar'):
+    if dna_input:
+        # Validar secuencia de ADN
+        if all(base in 'ATGC' for base in dna_input):
+            rna_sequence = dna_to_rna(dna_input)
+            protein_sequence = rna_to_protein(rna_sequence)
+            
+            # Mostrar los resultados
+            st.write('Secuencia de ARN: ', rna_sequence)
+            st.write('Secuencia de proteína (aminoácidos): ', protein_sequence)
+            
+            # Contar las proteínas (aminoácidos)
+            protein_count = {aa: protein_sequence.count(aa) for aa in set(protein_sequence)}
+            st.write('Cantidad de cada tipo de proteína (aminoácido):', protein_count)
+        else:
+            st.error('La secuencia de ADN contiene caracteres no válidos. Debe contener solo A, T, G, C.')
