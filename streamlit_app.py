@@ -1,5 +1,4 @@
 import streamlit as st
-from Bio.SeqUtils import molecular_weight
 
 def traducir_adn(entrada_adn):
     """
@@ -52,11 +51,6 @@ if st.button('Comparar Secuencias'):
             st.write(f'Cantidad de aminoácidos coincidentes: {coincidencias}')
             st.write(f'Diferencias en la proteína: {diferencias}')
             
-            # Mostrar el peso molecular de las proteínas
-            peso_molecular_1 = molecular_weight(proteina1)
-            peso_molecular_2 = molecular_weight(proteina2)
-            st.write(f'Peso molecular de la Proteína 1: {peso_molecular_1} Da')
-            st.write(f'Peso molecular de la Proteína 2: {peso_molecular_2} Da')
 
         else:
             st.error("Hubo un error al traducir las secuencias de ADN.")
