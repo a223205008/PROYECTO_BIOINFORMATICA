@@ -117,4 +117,41 @@ st.sidebar.image("https://images.my.labster.com/632b09d9-12b5-4bc1-937e-86b46c08
 seq1 = st.text_area("Introduce la primera secuencia de ADN")
 seq2 = st.text_area("Introduce la segunda secuencia de ADN")
 
+# Botón para realizar la comparación
+if st.button('Comparar Secuencias'):
+    
+    if seq1 and seq2:
+        # Traducción de las secuencias de ADN a proteínas
+        proteina1 = traducir_a_proteina(seq1)
+        proteina2 = traducir_a_proteina(seq2)
+    
+        if proteina1 and proteina2:
+            # Mostrar las proteínas traducidas
+            st.write(f'Proteína 1: {proteina1}')
+            st.write(f'Proteína 2: {proteina2}')
 
+            # Comparación de las proteínas
+            coincidencias, diferencias = comparar_proteinas(proteina1, proteina2)
+
+            # Contar los aminoácidos presentes
+            aminoacidos_contados_1 = contar_aminoacidos(proteina1)
+            aminoacidos_contados_2 = contar_aminoacidos(proteina2)
+            
+            # Mostrar los resultados de la comparación de proteínas
+            st.write("Tipos de aminoácidos presentes y su cantidad en la Proteína 1:")
+            for aminoacido, cantidad in aminoacidos_contados_1.items():
+                st.write(f'{aminoacido}: {cantidad}')
+
+            st.write("Tipos de aminoácidos presentes y su cantidad en la Proteína 2:")
+            for aminoacido, cantidad in aminoacidos_contados_2.items():
+                st.write(f'{aminoacido}: {cantidad}')
+
+            # Mostrar la gráfica de barras apiladas para la comparación
+            graficar_comparacion_barras_apiladas(aminoacidos_contados_1, aminoacidos_contados_2)
+
+            # Comparación de los aminoácidos
+            st.write(f'Cantidad de aminoácidos coincidentes: {coincidencias}')
+            st.write(f'Diferencias en la proteína: {diferencias}')
+            
+        else:
+            st.error("Hubo un error al traducir las secuencias de ADN.")
