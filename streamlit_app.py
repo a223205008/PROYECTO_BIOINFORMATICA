@@ -36,7 +36,7 @@ def traducir_codon(codon):
     return codones_a_aminoacidos.get(codon, 'Desconocido')
 
 # Función para traducir una secuencia de ADN completa a su secuencia de proteínas
-def traducir_adn_a_proteina(seq1):
+def seq1(seq1):
     """
     Convierte una secuencia de ADN en su correspondiente secuencia de proteína.
     """
@@ -50,7 +50,7 @@ def traducir_adn_a_proteina(seq1):
     return ''.join(proteina1)
 
 # Función para traducir una secuencia de ADN completa a su secuencia de proteínas
-def traducir_adn_a_proteina(seq2):
+def seq2(seq2):
     """
     Convierte una secuencia de ADN en su correspondiente secuencia de proteína.
     """
