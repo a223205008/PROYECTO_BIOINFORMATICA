@@ -18,6 +18,5 @@ A simple Streamlit app template for you to modify!
 
    ```
    $ streamlit run streamlit_app.py
-   $ streamlit run streamlit_app.py
-
+ 
    ```
