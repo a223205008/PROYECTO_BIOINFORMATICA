@@ -1,3 +1,5 @@
+pip install streamlit biopython
+
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
@@ -38,27 +40,51 @@ def rna_to_protein(rna_sequence):
             protein.append(amino_acid)
     return ''.join(protein)
 
+def comparar_proteinas(proteina1, proteina2):
+    """
+    Función para comparar dos secuencias de proteínas.
+    Retorna la cantidad de proteínas que coinciden y los cambios.
+    """
+    coincidencias = 0
+    for p1, p2 in zip(proteina1, proteina2):
+        if p1 == p2:
+            coincidencias += 1
+    diferencias = len(proteina1) - coincidencias
+    return coincidencias, diferencias
+
 # Interfaz de usuario en Streamlit
-st.title('Análisis de Secuencia de ADN')
+st.title('Comparador de Secuencias de ADN')
 
-# Entrada del usuario: secuencia de ADN
-dna_input = st.text_area('Introduce la primera secuencia de ADN:', '')
-dna_input = st.text_area('Introduce la segunda secuencia de ADN:', '')
+# Introducción de las secuencias de ADN
+seq1 = st.text_area('Introduce la primera secuencia de ADN', height=200)
+seq2 = st.text_area('Introduce la segunda secuencia de ADN', height=200)
 
-# Botón para procesar
-if st.button('Analizar'):
-    if dna_input:
-        # Validar secuencia de ADN
-        if all(base in 'ATGC' for base in dna_input):
-            rna_sequence = dna_to_rna(dna_input)
-            protein_sequence = rna_to_protein(rna_sequence)
+# Botón para realizar la comparación
+if st.button('Comparar Secuencias'):
+    if seq1 and seq2:
+        # Traducción de las secuencias de ADN a proteínas
+        proteina1 = traducir_adn(seq1)
+        proteina2 = traducir_adn(seq2)
+
+        if proteina1 and proteina2:
+            # Mostrar las proteínas traducidas
+            st.write(f'Proteína 1: {proteina1}')
+            st.write(f'Proteína 2: {proteina2}')
+
+            # Comparación de las proteínas
+            coincidencias, diferencias = comparar_proteinas(proteina1, proteina2)
             
-            # Mostrar los resultados
-            st.write('Secuencia de ARN: ', rna_sequence)
-            st.write('Secuencia de proteína (aminoácidos): ', protein_sequence)
+            # Mostrar los resultados de la comparación
+            st.write(f'Cantidad de aminoácidos coincidentes: {coincidencias}')
+            st.write(f'Diferencias en la proteína: {diferencias}')
             
-            # Contar las proteínas (aminoácidos)
-            protein_count = {aa: protein_sequence.count(aa) for aa in set(protein_sequence)}
-            st.write('Cantidad de cada tipo de proteína (aminoácido):', protein_count)
+            # Mostrar el peso molecular de las proteínas
+            peso_molecular_1 = molecular_weight(proteina1)
+            peso_molecular_2 = molecular_weight(proteina2)
+            st.write(f'Peso molecular de la Proteína 1: {peso_molecular_1} Da')
+            st.write(f'Peso molecular de la Proteína 2: {peso_molecular_2} Da')
+
         else:
-            st.error('La secuencia de ADN contiene caracteres no válidos. Debe contener solo A, T, G, C.')
+            st.error("Hubo un error al traducir las secuencias de ADN.")
+    else:
+        st.warning("Por favor, ingresa ambas secuencias de ADN.")
