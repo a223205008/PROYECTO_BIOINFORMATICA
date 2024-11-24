@@ -93,6 +93,20 @@ def contar_aminoacidos(proteina2):
     contador = Counter(proteina2)
     return contador
 
+def traducir_adn(entrada_adn):
+    """
+    Función para traducir una secuencia de ADN a una secuencia de proteína.
+    Utiliza el marco de lectura estándar (sin considerar mutaciones o marcos alternativos).
+    """
+    secuencia_adn = Seq(entrada_adn)
+    try:
+        # Traducción de la secuencia ADN a proteína
+        secuencia_proteina = secuencia_adn.translate()
+        return secuencia_proteina
+    except:
+        return None
+
+
 def graficar_comparacion_barras_apiladas(aminoacidos_contados_1, aminoacidos_contados_2):
     """
     Función para graficar la comparación de los aminoácidos en dos proteínas usando barras apiladas.
