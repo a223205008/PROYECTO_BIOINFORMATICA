@@ -3,9 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from collections import Counter
 
-st.title("¿Cuántas proteínas contiene y cuáles son?")
-
-import streamlit as st
+st.title("Diferencia proteica entre dos genes")
 
 # Diccionario de codones de ARN a aminoácidos
 codon_to_amino_acid = {
@@ -42,7 +40,8 @@ def rna_to_protein(rna_sequence):
 st.title('Análisis de Secuencia de ADN')
 
 # Entrada del usuario: secuencia de ADN
-dna_input = st.text_area('Introduce una secuencia de ADN:', '')
+dna_input = st.text_area('Introduce la primera secuencia de ADN:', '')
+dna_input = st.text_area('Introduce la segunda secuencia de ADN:', '')
 
 # Botón para procesar
 if st.button('Analizar'):
