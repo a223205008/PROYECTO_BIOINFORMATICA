@@ -22,21 +22,18 @@ codon_to_amino_acid = {
     'GGU': 'G', 'GGC': 'G', 'GGA': 'G', 'GGG': 'G'
 }
 
-def dna_to_rna(dna_sequence):
-    """Convierte una secuencia de ADN a ARN reemplazando la T por U."""
-    return dna_sequence.replace('T', 'U')
-
-def rna_to_protein(rna_sequence):
-    """Convierte una secuencia de ARN a proteína (secuencia de aminoácidos)."""
-    protein = []
-    for i in range(0, len(rna_sequence), 3):  # Leer de 3 en 3 nucleótidos (codones)
-        codon = rna_sequence[i:i+3]
-        if len(codon) == 3:
-            amino_acid = codon_to_amino_acid.get(codon, 'X')  # X para codón desconocido
-            if amino_acid == '*':
-                break  # Parada de la traducción
-            protein.append(amino_acid)
-    return ''.join(protein)
+def traducir_adn(entrada_adn):
+    """
+    Función para traducir una secuencia de ADN a una secuencia de proteína.
+    Utiliza el marco de lectura estándar (sin considerar mutaciones o marcos alternativos).
+    """
+    secuencia_adn = Seq(entrada_adn)
+    try:
+        # Traducción de la secuencia ADN a proteína
+        secuencia_proteina = secuencia_adn.translate()
+        return secuencia_proteina
+    except:
+        return None
 
 def comparar_proteinas(proteina1, proteina2):
     """
