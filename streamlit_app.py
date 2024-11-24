@@ -194,5 +194,4 @@ if st.button('Comparar Secuencias'):
             
         else:
             st.error("Hubo un error al traducir las secuencias de ADN.")
-    else:
-        st.warning("Por favor, ingresa ambas secuencias de ADN.")
+
