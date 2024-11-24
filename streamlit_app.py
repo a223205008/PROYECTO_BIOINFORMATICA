@@ -1,6 +1,8 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
+from Bio.Seq import Seq
+from Bio.SeqUtils import molecular_weight
 from collections import Counter
 
 st.title("Diferencia proteica entre dos genes")
