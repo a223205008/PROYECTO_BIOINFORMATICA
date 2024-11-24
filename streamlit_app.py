@@ -57,19 +57,6 @@ def contar_aminoacidos(proteina):
     contador = Counter(proteina)
     return contador
 
-def traducir_adn(entrada_adn):
-    """
-    Función para traducir una secuencia de ADN a una secuencia de proteína.
-    Utiliza el marco de lectura estándar (sin considerar mutaciones o marcos alternativos).
-    """
-    secuencia_adn = Seq(entrada_adn)
-    try:
-        # Traducción de la secuencia ADN a proteína
-        secuencia_proteina = secuencia_adn.translate()
-        return secuencia_proteina
-    except:
-        return None
-
 def contar_aminoacidos(proteina):
     """
     Función para contar los aminoácidos presentes en la secuencia de proteína.
