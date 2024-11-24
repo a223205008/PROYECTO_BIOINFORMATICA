@@ -7,6 +7,56 @@ from collections import Counter
 # Configuración de los estilos de gráficos
 sns.set(style="whitegrid")
 
+# Diccionario de codones a aminoácidos
+codones_a_aminoacidos = {
+    'ATA': 'Ile', 'ATC': 'Ile', 'ATT': 'Ile', 'ATG': 'Met', 
+    'ACA': 'Thr', 'ACC': 'Thr', 'ACG': 'Thr', 'ACT': 'Thr', 
+    'AAC': 'Asn', 'AAT': 'Asn', 'AAA': 'Lys', 'AAG': 'Lys', 
+    'AGC': 'Ser', 'AGT': 'Ser', 'AGA': 'Arg', 'AGG': 'Arg', 
+    'CTA': 'Leu', 'CTC': 'Leu', 'CTG': 'Leu', 'CTT': 'Leu', 
+    'CCA': 'Pro', 'CCC': 'Pro', 'CCG': 'Pro', 'CCT': 'Pro', 
+    'CAC': 'His', 'CAT': 'His', 'CAA': 'Gln', 'CAG': 'Gln', 
+    'CGA': 'Arg', 'CGC': 'Arg', 'CGG': 'Arg', 'CGT': 'Arg', 
+    'GTA': 'Val', 'GTC': 'Val', 'GTG': 'Val', 'GTT': 'Val', 
+    'GCA': 'Ala', 'GCC': 'Ala', 'GCG': 'Ala', 'GCT': 'Ala', 
+    'GAC': 'Asp', 'GAT': 'Asp', 'GAA': 'Glu', 'GAG': 'Glu', 
+    'GGA': 'Gly', 'GGC': 'Gly', 'GGG': 'Gly', 'GGT': 'Gly', 
+    'TCA': 'Ser', 'TCC': 'Ser', 'TCG': 'Ser', 'TCT': 'Ser', 
+    'TTC': 'Phe', 'TTT': 'Phe', 'TTA': 'Leu', 'TTG': 'Leu', 
+    'TAC': 'Tyr', 'TAT': 'Tyr', 'TAA': 'Stop', 'TAG': 'Stop', 
+    'TGC': 'Cys', 'TGT': 'Cys', 'TGA': 'Stop', 'TGG': 'Trp', 
+    'CTA': 'Leu', 'CTC': 'Leu', 'CTG': 'Leu', 'CTT': 'Leu'
+}
+
+# Función para traducir un codón de ADN a un aminoácido
+def traducir_codon(codon):
+    """
+    Traducir un codón de ADN a un aminoácido utilizando el diccionario.
+    """
+    return codones_a_aminoacidos.get(codon, 'Desconocido')
+
+# Función para traducir una secuencia de ADN completa a su secuencia de proteínas
+def traducir_adn_a_proteina(secuencia_adn):
+    """
+    Convierte una secuencia de ADN en su correspondiente secuencia de proteína.
+    """
+    proteina = []
+    # Asegurarnos de que la longitud sea múltiplo de 3 para obtener codones completos
+    secuencia_adn = secuencia_adn.upper()
+    for i in range(0, len(secuencia_adn), 3):
+        codon = secuencia_adn[i:i+3]
+        if len(codon) == 3:
+            proteina.append(traducir_codon(codon))
+    return ''.join(proteina)
+
+# Función para contar los aminoácidos presentes en la proteína
+def contar_aminoacidos(proteina):
+    """
+    Función para contar los aminoácidos presentes en la secuencia de proteína.
+    """
+    contador = Counter(proteina)
+    return contador
+
 def traducir_adn(entrada_adn):
     """
     Función para traducir una secuencia de ADN a una secuencia de proteína.
