@@ -1,6 +1,12 @@
 import streamlit as st
-from Bio.Seq import Seq
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np 
 from collections import Counter
+from Bio.Seq import Seq
+
+# Configuración de los estilos de gráficos
+sns.set(style="whitegrid")
 
 # Diccionario de codones a aminoácidos
 codones_a_aminoacidos = {
@@ -19,56 +25,135 @@ codones_a_aminoacidos = {
     'TCA': 'Ser', 'TCC': 'Ser', 'TCG': 'Ser', 'TCT': 'Ser', 
     'TTC': 'Phe', 'TTT': 'Phe', 'TTA': 'Leu', 'TTG': 'Leu', 
     'TAC': 'Tyr', 'TAT': 'Tyr', 'TAA': 'Stop', 'TAG': 'Stop', 
-    'TGC': 'Cys', 'TGT': 'Cys', 'TGA': 'Stop', 'TGG': 'Trp', 
-    'CTA': 'Leu', 'CTC': 'Leu', 'CTG': 'Leu', 'CTT': 'Leu'
+    'TGC': 'Cys', 'TGT': 'Cys', 'TGA': 'Stop', 'TGG': 'Trp'
 }
 
-# Función para traducir una secuencia de ADN a una proteína
-def traducir_a_proteina(seq):
-    # Asegúrate de que la secuencia sea válida
-    seq = seq.upper()  # Convertir a mayúsculas
-    # Crear un objeto Seq de Biopython y traducir
-    secuencia_obj = Seq(seq)
-    proteina = secuencia_obj.translate(to_stop=True)
-    return str(proteina)
+# Función para traducir un codón de ADN a un aminoácido
+def traducir_codon(codon):
+    return codones_a_aminoacidos.get(codon, 'Desconocido')
 
-# Función para contar aminoácidos en la proteína
+# Función para traducir una secuencia de ADN completa a su secuencia de proteínas
+def traducir_secuencia(seq):
+    proteina = []
+    seq = seq.upper()
+    for i in range(0, len(seq), 3):
+        codon = seq[i:i+3]
+        if len(codon) == 3:
+            proteina.append(traducir_codon(codon))
+    return ''.join(proteina)
+
+# Función para contar los aminoácidos presentes en la proteína
 def contar_aminoacidos(proteina):
-    return dict(Counter(proteina))
+    return Counter(proteina)
 
-# Crear la interfaz con Streamlit
+# Función para graficar la distribución de aminoácidos
+def graficar_aminoacidos(aminoacidos_contados, secuencia_num):
+    aminoacidos = list(aminoacidos_contados.keys())
+    cantidades = list(aminoacidos_contados.values())
+    
+    plt.figure(figsize=(8, 5))
+    plt.bar(aminoacidos, cantidades, color='skyblue')
+    plt.title(f"Distribución de Aminoácidos en la Proteína {secuencia_num}")
+    plt.xlabel("Aminoácidos")
+    plt.ylabel("Cantidad")
+    plt.xticks(rotation=45)
+    st.pyplot(plt)
+
+# Función para graficar la cantidad de nucleótidos de cada secuencia de ADN
+def graficar_nucleotidos(seq1, seq2):
+    nucleotidos_seq1 = len(seq1)
+    nucleotidos_seq2 = len(seq2)
+    
+    # Crear el gráfico de barras
+    plt.figure(figsize=(6, 4))
+    plt.bar(['Secuencia 1', 'Secuencia 2'], [nucleotidos_seq1, nucleotidos_seq2], color='lightgreen')
+    plt.title("Cantidad de Nucleótidos por Secuencia de ADN")
+    plt.ylabel("Cantidad de Nucleótidos")
+    st.pyplot(plt)
+
+# Función para graficar la comparación de los aminoácidos en dos proteínas usando barras apiladas
+def graficar_comparacion_barras_apiladas(aminoacidos_contados_1, aminoacidos_contados_2):
+    aminoacidos_1 = list(aminoacidos_contados_1.keys())
+    cantidades_1 = list(aminoacidos_contados_1.values())
+    
+    aminoacidos_2 = list(aminoacidos_contados_2.keys())
+    cantidades_2 = list(aminoacidos_contados_2.values())
+    
+    # Crear un conjunto de aminoácidos único para ambas proteínas
+    todos_aminoacidos = set(aminoacidos_1 + aminoacidos_2)
+    todos_aminoacidos = list(todos_aminoacidos)
+    
+    # Reorganizar las listas para que todos los aminoácidos estén en el mismo orden
+    cantidades_1_completa = [aminoacidos_contados_1.get(amino, 0) for amino in todos_aminoacidos]
+    cantidades_2_completa = [aminoacidos_contados_2.get(amino, 0) for amino in todos_aminoacidos]
+    
+    # Crear la gráfica de barras apiladas
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.bar(todos_aminoacidos, cantidades_1_completa, label='Secuencia 1', color='skyblue')
+    ax.bar(todos_aminoacidos, cantidades_2_completa, bottom=cantidades_1_completa, label='Secuencia 2', color='salmon')
+    
+    # Etiquetas y título
+    ax.set_title('Comparación de Aminoácidos entre Proteína 1 y Proteína 2')
+    ax.set_xlabel('Aminoácidos')
+    ax.set_ylabel('Cantidad')
+    ax.legend()
+    
+    st.pyplot(fig)
+
+# Título de la app
 st.title('Comparador de Secuencias de ADN y Análisis de Proteínas')
 
-# Descripción de la app
-st.write("Introduce dos secuencias de ADN para compararlas")
+st.sidebar.title("Conceptos")
+st.sidebar.write("""
+**Proteínas**: Las proteínas son moléculas formadas por cadenas de aminoácidos, que a su vez son codificadas por las secuencias de ADN. Estas proteínas realizan una variedad de funciones dentro de las células, como enzimas, estructuras y señales.
 
-# Áreas de texto para ingresar las secuencias
-seq1 = st.text_area('Introduce la primera secuencia de ADN', height=200)
-seq2 = st.text_area('Introduce la segunda secuencia de ADN', height=200)
+**Nucleótidos**: Los nucleótidos son las unidades básicas del ADN. Cada nucleótido está formado por un azúcar, un fosfato y una base nitrogenada (adenina, timina, citosina o guanina). Las secuencias de nucleótidos en el ADN determinan la información genética que codifica para las proteínas.
+
+**Similitud Genética**: Los seres vivos comparten un alto grado de similitud genética en sus secuencias de ADN. Esta similitud se refleja en las secuencias de proteínas que producen. Las pequeñas diferencias genéticas entre especies pueden dar lugar a las diversas características y funciones biológicas que los hacen únicos, pero la mayor parte del ADN es común entre organismos cercanamente relacionados.
+""")
+
+# Incluir una imagen relacionada con genética
+st.sidebar.image("https://images.my.labster.com/632b09d9-12b5-4bc1-937e-86b46c085d23/Codon_circle.es_ES.png")
+
+# Introducción de las secuencias de ADN
+seq1 = st.text_area("Introduce la primera secuencia de ADN")
+seq2 = st.text_area("Introduce la segunda secuencia de ADN")
 
 # Botón para realizar la comparación
 if st.button('Comparar Secuencias'):
+    
     if seq1 and seq2:
+        # Traducción de las secuencias de ADN a proteínas
         proteina1 = traducir_a_proteina(seq1)
         proteina2 = traducir_a_proteina(seq2)
+    
+        if proteina1 and proteina2:
+            # Mostrar las proteínas traducidas
+            st.write(f'Proteína 1: {proteina1}')
+            st.write(f'Proteína 2: {proteina2}')
 
-        # Mostrar las proteínas traducidas
-        st.write(f'Proteína 1: {proteina1}')
-        st.write(f'Proteína 2: {proteina2}')
-        
-        # Comparación simple de proteínas
-        if proteina1 == proteina2:
-            st.write("Las proteínas son idénticas.")
+            # Comparación de las proteínas
+            coincidencias, diferencias = comparar_proteinas(proteina1, proteina2)
+
+            # Contar los aminoácidos presentes
+            aminoacidos_contados_1 = contar_aminoacidos(proteina1)
+            aminoacidos_contados_2 = contar_aminoacidos(proteina2)
+            
+            # Mostrar los resultados de la comparación de proteínas
+            st.write("Tipos de aminoácidos presentes y su cantidad en la Proteína 1:")
+            for aminoacido, cantidad in aminoacidos_contados_1.items():
+                st.write(f'{aminoacido}: {cantidad}')
+
+            st.write("Tipos de aminoácidos presentes y su cantidad en la Proteína 2:")
+            for aminoacido, cantidad in aminoacidos_contados_2.items():
+                st.write(f'{aminoacido}: {cantidad}')
+
+            # Mostrar la gráfica de barras apiladas para la comparación
+            graficar_comparacion_barras_apiladas(aminoacidos_contados_1, aminoacidos_contados_2)
+
+            # Comparación de los aminoácidos
+            st.write(f'Cantidad de aminoácidos coincidentes: {coincidencias}')
+            st.write(f'Diferencias en la proteína: {diferencias}')
+            
         else:
-            st.write("Las proteínas son diferentes.")
-
-        # Contar los aminoácidos en ambas proteínas
-        aminoacidos_contados_1 = contar_aminoacidos(proteina1)
-        aminoacidos_contados_2 = contar_aminoacidos(proteina2)
-
-        # Mostrar los contadores de aminoácidos
-        st.write("Conteo de aminoácidos en Proteína 1:")
-        st.write(aminoacidos_contados_1)
-        st.write("Conteo de aminoácidos en Proteína 2:")
-        st.write(aminoacidos_contados_2)
-
+            st.error("Hubo un error al traducir las secuencias de ADN.")
