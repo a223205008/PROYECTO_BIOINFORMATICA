@@ -1,6 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 from collections import Counter
 
 # Configuración de los estilos de gráficos
@@ -25,6 +26,41 @@ def contar_aminoacidos(proteina):
     """
     contador = Counter(proteina)
     return contador
+
+def graficar_comparacion_barras_apiladas(aminoacidos_contados_1, aminoacidos_contados_2):
+    """
+    Función para graficar la comparación de los aminoácidos en dos proteínas usando barras apiladas.
+    """
+    # Obtener los aminoácidos y sus cantidades
+    aminoacidos_1 = list(aminoacidos_contados_1.keys())
+    cantidades_1 = list(aminoacidos_contados_1.values())
+
+    aminoacidos_2 = list(aminoacidos_contados_2.keys())
+    cantidades_2 = list(aminoacidos_contados_2.values())
+
+    # Crear un conjunto de aminoácidos único para ambas proteínas
+    todos_aminoacidos = set(aminoacidos_1 + aminoacidos_2)
+    todos_aminoacidos = list(todos_aminoacidos)
+    
+    # Reorganizar las listas para que todos los aminoácidos estén en el mismo orden
+    cantidades_1_completa = [aminoacidos_contados_1.get(amino, 0) for amino in todos_aminoacidos]
+    cantidades_2_completa = [aminoacidos_contados_2.get(amino, 0) for amino in todos_aminoacidos]
+
+    # Crear la gráfica de barras apiladas
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Barras apiladas
+    ax.bar(todos_aminoacidos, cantidades_1_completa, label='Secuencia 1', color='skyblue')
+    ax.bar(todos_aminoacidos, cantidades_2_completa, bottom=cantidades_1_completa, label='Secuencia 2', color='salmon')
+
+    # Etiquetas y título
+    ax.set_title('Comparación de Aminoácidos entre Proteína 1 y Proteína 2')
+    ax.set_xlabel('Aminoácidos')
+    ax.set_ylabel('Cantidad')
+    ax.legend()
+
+    # Mostrar la gráfica
+    st.pyplot(fig)
 
 def graficar_aminoacidos(aminoacidos_contados, secuencia_num):
     """
@@ -88,12 +124,28 @@ if st.button('Comparar Secuencias'):
 
             # Comparación de las proteínas
             coincidencias, diferencias = comparar_proteinas(proteina1, proteina2)
+
+            # Contar los aminoácidos presentes
+            aminoacidos_contados_1 = contar_aminoacidos(proteina1)
+            aminoacidos_contados_2 = contar_aminoacidos(proteina2)
             
-            # Mostrar los resultados de la comparación
+            # Mostrar los resultados de la comparación de proteínas
+            st.write("Tipos de aminoácidos presentes y su cantidad en la Proteína 1:")
+            for aminoacido, cantidad in aminoacidos_contados_1.items():
+                st.write(f'{aminoacido}: {cantidad}')
+
+            st.write("Tipos de aminoácidos presentes y su cantidad en la Proteína 2:")
+            for aminoacido, cantidad in aminoacidos_contados_2.items():
+                st.write(f'{aminoacido}: {cantidad}')
+
+            # Mostrar la gráfica de barras apiladas para la comparación
+            graficar_comparacion_barras_apiladas(aminoacidos_contados_1, aminoacidos_contados_2)
+
+            # Comparación de los aminoácidos
+            coincidencias, diferencias = comparar_proteinas(proteina1, proteina2)
             st.write(f'Cantidad de aminoácidos coincidentes: {coincidencias}')
             st.write(f'Diferencias en la proteína: {diferencias}')
             
-
         else:
             st.error("Hubo un error al traducir las secuencias de ADN.")
     else:
