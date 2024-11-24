@@ -1,31 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+import seaborn as sns
 from collections import Counter
-
-def traducir_adn(entrada_adn):
-    """
-    Función para traducir una secuencia de ADN a una secuencia de proteína.
-    Utiliza el marco de lectura estándar (sin considerar mutaciones o marcos alternativos).
-    """
-    secuencia_adn = Seq(entrada_adn)
-    try:
-        # Traducción de la secuencia ADN a proteína
-        secuencia_proteina = secuencia_adn.translate()
-        return secuencia_proteina
-    except:
-        return None
-
-def comparar_proteinas(proteina1, proteina2):
-    """
-    Función para comparar dos secuencias de proteínas.
-    Retorna la cantidad de proteínas que coinciden y los cambios.
-    """
-    coincidencias = 0
-    for p1, p2 in zip(proteina1, proteina2):
-        if p1 == p2:
-            coincidencias += 1
-    diferencias = len(proteina1) - coincidencias
-    return coincidencias, diferencias
 
 # Configuración de los estilos de gráficos
 sns.set(style="whitegrid")
@@ -78,6 +54,18 @@ def graficar_nucleotidos(seq1, seq2):
     plt.title("Cantidad de Nucleótidos por Secuencia de ADN")
     plt.ylabel("Cantidad de Nucleótidos")
     st.pyplot(plt)
+
+def comparar_proteinas(proteina1, proteina2):
+    """
+    Función para comparar dos secuencias de proteínas.
+    Retorna la cantidad de proteínas que coinciden y los cambios.
+    """
+    coincidencias = 0
+    for p1, p2 in zip(proteina1, proteina2):
+        if p1 == p2:
+            coincidencias += 1
+    diferencias = len(proteina1) - coincidencias
+    return coincidencias, diferencias
 
 # Título de la app
 st.title('Comparador de Secuencias de ADN')
