@@ -1,8 +1,8 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np 
 from collections import Counter
-from Bio.Seq import Seq
 
 # Configuración de los estilos de gráficos
 sns.set(style="whitegrid")
