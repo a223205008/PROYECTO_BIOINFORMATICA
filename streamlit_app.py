@@ -93,12 +93,12 @@ def contar_aminoacidos(proteina2):
     contador = Counter(proteina2)
     return contador
 
-def traducir_adn(entrada_adn):
+def traducir_adn1(entrada_adn):
     """
     Función para traducir una secuencia de ADN a una secuencia de proteína.
     Utiliza el marco de lectura estándar (sin considerar mutaciones o marcos alternativos).
     """
-    secuencia_adn = Seq(entrada_adn)
+    secuencia_adn = Seq1(entrada_adn)
     try:
         # Traducción de la secuencia ADN a proteína
         secuencia_proteina = secuencia_adn.translate()
@@ -106,6 +106,18 @@ def traducir_adn(entrada_adn):
     except:
         return None
 
+def traducir_adn2(entrada_adn):
+    """
+    Función para traducir una secuencia de ADN a una secuencia de proteína.
+    Utiliza el marco de lectura estándar (sin considerar mutaciones o marcos alternativos).
+    """
+    secuencia_adn = Seq1(entrada_adn)
+    try:
+        # Traducción de la secuencia ADN a proteína
+        secuencia_proteina = secuencia_adn.translate()
+        return secuencia_proteina
+    except:
+        return None
 
 def graficar_comparacion_barras_apiladas(aminoacidos_contados_1, aminoacidos_contados_2):
     """
@@ -208,8 +220,8 @@ if st.button('Comparar Secuencias'):
     
     if seq1 and seq2:
         # Traducción de las secuencias de ADN a proteínas
-        proteina1 = traducir_adn(seq1)
-        proteina2 = traducir_adn(seq2)
+        proteina1 = traducir_adn1(seq1)
+        proteina2 = traducir_adn2(seq2)
     
         if proteina1 and proteina2:
             # Mostrar las proteínas traducidas
