@@ -10,10 +10,14 @@ A simple Streamlit app template for you to modify!
 
    ```
    $ pip install -r requirements.txt
+   $ pip install streamlit biopython
+
    ```
 
 2. Run the app
 
    ```
    $ streamlit run streamlit_app.py
+   $ streamlit run app.py
+
    ```
