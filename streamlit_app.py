@@ -162,11 +162,7 @@ seq2 = st.text_area('Introduce la segunda secuencia de ADN', height=200)
 
 # Botón para realizar la comparación
 if st.button('Comparar Secuencias'):
-    if seq1 and seq2:
-        # Traducción de las secuencias de ADN a proteínas
-        proteina1 = traducir_adn(seq1)
-        proteina2 = traducir_adn(seq2)
-
+    
         if proteina1 and proteina2:
             # Mostrar las proteínas traducidas
             st.write(f'Proteína 1: {proteina1}')
