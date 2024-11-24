@@ -114,6 +114,7 @@ st.sidebar.write("""
 st.sidebar.image("https://images.my.labster.com/632b09d9-12b5-4bc1-937e-86b46c085d23/Codon_circle.es_ES.png")
 
 # Introducción de las secuencias de ADN
-seq1 = st.text_area('Introduce la primera
+seq1 = st.text_area(Introduce la primera secuencia de ADN)
+seq2 = st.text_area(Introduce la segunda secuencia de ADN)
 
 
