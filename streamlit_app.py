@@ -1,5 +1,4 @@
 import streamlit as st
-from Bio.Seq import Seq
 from Bio.SeqUtils import molecular_weight
 
 def traducir_adn(entrada_adn):
