@@ -35,18 +35,19 @@ def traducir_codon(codon):
     """
     return codones_a_aminoacidos.get(codon, 'Desconocido')
 
-def traducir_adn(entrada_adn):
+# Función para traducir una secuencia de ADN completa a su secuencia de proteínas
+def traducir_adn_a_proteina(secuencia_adn):
     """
-    Función para traducir una secuencia de ADN a una secuencia de proteína.
-    Utiliza el marco de lectura estándar (sin considerar mutaciones o marcos alternativos).
+    Convierte una secuencia de ADN en su correspondiente secuencia de proteína.
     """
-    secuencia_adn = Seq(entrada_adn)
-    try:
-        # Traducción de la secuencia ADN a proteína
-        secuencia_proteina = secuencia_adn.translate()
-        return secuencia_proteina
-    except:
-        return None
+    proteina = []
+    # Asegurarnos de que la longitud sea múltiplo de 3 para obtener codones completos
+    secuencia_adn = secuencia_adn.upper()
+    for i in range(0, len(secuencia_adn), 3):
+        codon = secuencia_adn[i:i+3]
+        if len(codon) == 3:
+            proteina.append(traducir_codon(codon))
+    return ''.join(proteina)
 
 # Función para contar los aminoácidos presentes en la proteína
 def contar_aminoacidos(proteina):
