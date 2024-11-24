@@ -36,33 +36,61 @@ def traducir_codon(codon):
     return codones_a_aminoacidos.get(codon, 'Desconocido')
 
 # Función para traducir una secuencia de ADN completa a su secuencia de proteínas
-def traducir_adn_a_proteina(secuencia_adn):
+def traducir_adn_a_proteina(seq1):
     """
     Convierte una secuencia de ADN en su correspondiente secuencia de proteína.
     """
-    proteina = []
+    proteina1 = []
     # Asegurarnos de que la longitud sea múltiplo de 3 para obtener codones completos
-    secuencia_adn = secuencia_adn.upper()
-    for i in range(0, len(secuencia_adn), 3):
-        codon = secuencia_adn[i:i+3]
-        if len(codon) == 3:
-            proteina.append(traducir_codon(codon))
-    return ''.join(proteina)
+    seq1 = seq1.upper()
+    for i in range(0, len(seq1), 3):
+        codon1 = seq1[i:i+3]
+        if len(codon1) == 3:
+            proteina.append(traducir_codon(codon1))
+    return ''.join(proteina1)
 
+# Función para traducir una secuencia de ADN completa a su secuencia de proteínas
+def traducir_adn_a_proteina(seq2):
+    """
+    Convierte una secuencia de ADN en su correspondiente secuencia de proteína.
+    """
+    proteina2 = []
+    # Asegurarnos de que la longitud sea múltiplo de 3 para obtener codones completos
+    seq2 = seq2.upper()
+    for i in range(0, len(seq2), 3):
+        codon1 = seq2[i:i+3]
+        if len(codon2) == 3:
+            proteina2.append(traducir_codon(codon2))
+    return ''.join(proteina2)
 
 # Función para contar los aminoácidos presentes en la proteína
-def contar_aminoacidos(proteina):
+def contar_aminoacidos(proteina1):
     """
     Función para contar los aminoácidos presentes en la secuencia de proteína.
     """
-    contador = Counter(proteina)
+    contador = Counter(proteina1)
     return contador
 
-def contar_aminoacidos(proteina):
+# Función para contar los aminoácidos presentes en la proteína
+def contar_aminoacidos(proteina2):
     """
     Función para contar los aminoácidos presentes en la secuencia de proteína.
     """
-    contador = Counter(proteina)
+    contador = Counter(proteina2)
+    return contador
+
+def contar_aminoacidos(proteina1):
+    """
+    Función para contar los aminoácidos presentes en la secuencia de proteína.
+    """
+    contador = Counter(proteina1)
+    return contador
+
+def contar_aminoacidos(proteina2):
+    """
+    Función para contar los aminoácidos presentes en la secuencia de proteína.
+    """
+    contador = Counter(proteina2)
     return contador
 
 def graficar_comparacion_barras_apiladas(aminoacidos_contados_1, aminoacidos_contados_2):
