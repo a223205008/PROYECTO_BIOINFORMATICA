@@ -171,8 +171,4 @@ if st.button("Procesar Secuencias"):
                 )
                 st.pyplot(fig)
 
-        # Gráficas apiladas (si ambas secuencias son válidas)
-        if len(results) == 2:
-            if view_option == "Nucleótidos":
-                nucleot
 
