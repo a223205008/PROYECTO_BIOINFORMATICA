@@ -90,8 +90,8 @@ def plot_stacked_bar(data1, data2, labels, title, xlabel, ylabel, color1='skyblu
     return fig
 
 # Configuración de Streamlit
-st.title("Dashboard de Traducción de ADN a Proteínas")
-st.markdown("""Este dashboard permite introducir una secuencia de nucleótidos (ADN) para traducirla en proteínas y contar la cantidad de cada una presente en la secuencia.""")
+st.title("Proteínas y nucleótidos de dos secuencias de ADN")
+st.markdown("""Este dashboard permite introducir dos secuencias de nucleótidos (ADN) para traducirla en proteínas y contar la cantidad de cada una presente en la secuencia, así como las cantidades de nucleótidos que contienen ambas secuencias.""")
 
 st.sidebar.title("Conceptos")
 st.sidebar.write("""
@@ -101,6 +101,9 @@ st.sidebar.write("""
 
 **Similitud Genética**: Los seres vivos comparten un alto grado de similitud genética en sus secuencias de ADN. Esta similitud se refleja en las secuencias de proteínas que producen. Las pequeñas diferencias genéticas entre especies pueden dar lugar a las diversas características y funciones biológicas que los hacen únicos, pero la mayor parte del ADN es común entre organismos cercanamente relacionados.
 """)
+
+# Incluir una imagen relacionada con genética
+st.sidebar.image("https://images.my.labster.com/632b09d9-12b5-4bc1-937e-86b46c085d23/Codon_circle.es_ES.png")
 
 # Entrada del usuario: Secuencia 1
 st.subheader("Secuencia 1")
