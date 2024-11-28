@@ -102,6 +102,13 @@ st.sidebar.write("""
 **Similitud Genética**: Los seres vivos comparten un alto grado de similitud genética en sus secuencias de ADN. Esta similitud se refleja en las secuencias de proteínas que producen. Las pequeñas diferencias genéticas entre especies pueden dar lugar a las diversas características y funciones biológicas que los hacen únicos, pero la mayor parte del ADN es común entre organismos cercanamente relacionados.
 """)
 
+st.sidebar.title("Integrantes")
+st.sidebar.write("""
+**Ramírez Armenta José Alejandro**
+**Vidaurrazaga Sosa Raúl Xavier**
+**Villa Gálvez Juan Ramón**
+""")
+
 # Incluir una imagen relacionada con genética
 st.sidebar.image("https://images.my.labster.com/632b09d9-12b5-4bc1-937e-86b46c085d23/Codon_circle.es_ES.png")
 
